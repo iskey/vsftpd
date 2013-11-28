@@ -1,5 +1,5 @@
 # Makefile for systems with GNU tools
-CC 	=	gcc
+CC 	=	arm-hisiv200-linux-gcc
 INSTALL	=	install
 IFLAGS  = -idirafter dummyinc
 #CFLAGS = -g
@@ -8,7 +8,11 @@ CFLAGS	=	-O2 -fPIE -fstack-protector --param=ssp-buffer-size=4 \
 	-D_FORTIFY_SOURCE=2 \
 	#-pedantic -Wconversion
 
+ifeq (gcc,$(CC))
 LIBS	=	`./vsf_findlibs.sh`
+else
+LIBS	=	-lcrypt -ldl -lnsl	-lresolv -lutil
+endif
 LINK	=	-Wl,-s
 LDFLAGS	=	-fPIE -pie -Wl,-z,relro -Wl,-z,now
 
